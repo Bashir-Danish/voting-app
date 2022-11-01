@@ -31,10 +31,12 @@ import provinceRouter from "./routes/provinceRoutes.js";
 import districtRouter from "./routes/districtRoute.js";
 import userRouter from "./routes/userRoute.js";
 import postRoute from "./routes/postRoute.js";
+import pollRoute from "./routes/pollRoute.js";
 app.use("/api/v1/province", provinceRouter);
 app.use("/api/v1/district", districtRouter);
 app.use("/api/v1/user", userRouter);
 app.use("/api/v1/post", postRoute);
+app.use("/api/v1/poll", pollRoute);
 
 
 

@@ -28,6 +28,20 @@ const userSchema = new mongoose.Schema({
         required : true,
         ref: "districts",
     },
+    polls: {
+        type: [
+            {
+                pollId: {
+                    type: mongoose.Schema.ObjectId,
+                    ref: "polls",
+                },
+                opIndex: {
+                    type: Number
+                }
+            }
+        ],
+        default :null
+    },
 
 });
 
