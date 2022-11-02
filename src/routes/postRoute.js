@@ -1,7 +1,11 @@
 import express from "express";
 import { catchAsyncError } from "../middleware.js";
 import Post from "../models/postModel.js";
-import fileUpload from "express-fileupload";
+import { fileURLToPath } from "url";
+import path from "path";
+
+
+
 const router = express.Router();
 
 router.get(
@@ -45,6 +49,8 @@ router.post(
   catchAsyncError(async (req, res) => {
     let post = await Post.create({
       text: req.body.text,
+      file: req.body.file,
+      office: req.body.office,
     });
     res.status(201).json({
       success: true,
@@ -81,41 +87,45 @@ router.put(
   })
 );
 
-// router.post("/upload", (req, res) => {
-//   let file;
-//   try {
-//     file = req.files.file;
-//     if (!req.files) {
-//       return res.status(400).send("No files were uploaded.");
-//     }
-//     path = __dirname + "/uploads/posts/" + Date.now().toString() + file.name;
-//     file.mv(path, function (err) {
-//       if (err) return res.status(500).send(err);
-      
-//       res.json({
-//         message: "File uploaded!",
-//         path: "/uploads/posts/" + Date.now().toString() + file.name,
-//       });
-//     });
-//   } catch (error) {
-//     console.log(error);
-//   }
-// });
+router.post("/upload", function (req, res) {
+  let sampleFile;
+  let uploadPath;
+  try {
+    const __filename = fileURLToPath(import.meta.url);
+    const __dirname = path.dirname(__filename);
+
+    sampleFile = req.files.file;
+    if (!req.files || Object.keys(req.files).length === 0) {
+      return res.status(400).send("No files were uploaded.");
+    }
+      uploadPath = path.join(__dirname, "..", "/uploads/posts/") + Date.now().toString() + sampleFile.name;
+      console.log(uploadPath)
+    sampleFile.mv(uploadPath, function (err) {
+      if (err) return res.status(500).send(err);
+      res.json({
+        message: "File uploaded!",
+        path: uploadPath,
+      });
+    });
+  } catch (error) {
+    console.log(error);
+  }
+});
 
 router.delete(
   "/:id",
   catchAsyncError(async (req, res) => {
-    const user = await User.findById(req.params.id);
-    if (!user) {
+    const post = await Post.findById(req.params.id);
+    if (!post) {
       res.status(500).json({
-        message: "user not found",
+        message: "post not found",
       });
     } else {
-      await user.remove();
+      await post.remove();
 
       res.status(200).json({
         success: true,
-        message: "User deleted successfully",
+        message: "Post deleted successfully",
       });
     }
   })

@@ -6,6 +6,7 @@ import { config } from "dotenv";
 import { notFound, errorHandler } from "./middleware.js";
 import connectDatabase from "./config/db.js";
 import bp from 'body-parser'
+import fileUpload from "express-fileupload";
 
 config();
 connectDatabase()
@@ -19,6 +20,8 @@ app.use(morgan("dev"));
 app.use(helmet());
 app.use(cors());
 app.use(json());
+app.use(fileUpload());
+
 
 app.get("/", (req, res) => {
    res.json({
