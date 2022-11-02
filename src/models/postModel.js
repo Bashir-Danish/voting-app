@@ -7,6 +7,10 @@ const postSchema = new mongoose.Schema({
     file:{
         type:String,
     },
+    office:{
+        type: mongoose.Schema.ObjectId,
+        ref:"offices"
+    },
     isApprove:{
         type:Boolean,
         default:false

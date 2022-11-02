@@ -5,8 +5,8 @@ import User from '../models/usersModel.js'
 const router = express.Router();
 
 router.post('/signup', catchAsyncError(async (req, res) => {
-    const {name , lastName , email, phone , province, district} = req.body;
-    
+    const { name, lastName, email, phone, province, district } = req.body;
+
     let user = await User.create({
         name,
         lastName,
@@ -24,7 +24,7 @@ router.post('/signup', catchAsyncError(async (req, res) => {
 
 router.get('/all', catchAsyncError(async (req, res) => {
     let users = await User.find();
-    res.status(201).json({
+    res.status(200).json({
         success: true,
         users,
     });
@@ -35,9 +35,9 @@ router.get('/:id', catchAsyncError(async (req, res) => {
     const user = await User.findById(req.params.id);
     let code = 200
     let message = true
-    if(!user){
-       code =404
-       message = false
+    if (!user) {
+        code = 404
+        message = false
     }
     res.status(code).json({
         success: message,
@@ -49,16 +49,16 @@ router.delete('/:id', catchAsyncError(async (req, res) => {
     const user = await User.findById(req.params.id);
     if (!user) {
         res.status(500).json({
-            message:"user not found"
+            message: "user not found"
         })
     } else {
         await user.remove();
-    
+
         res.status(200).json({
-          success: true,
-          message: "User deleted successfully",
+            success: true,
+            message: "User deleted successfully",
         });
-      }
+    }
 }
 ));
 
@@ -68,10 +68,10 @@ router.put('/:id', catchAsyncError(async (req, res) => {
     const user = await User.findById(req.params.id);
     if (!user) {
         res.status(500).json({
-            message:"user not found"
+            message: "user not found"
         })
     } else {
-        
+
         user.name = req.body.name ?? user.name;
         user.lastName = req.body.lastName ?? user.lastName;
         user.email = req.body.email ?? user.email;
@@ -80,11 +80,11 @@ router.put('/:id', catchAsyncError(async (req, res) => {
         user.district = req.body.district ?? user.district;
         user.save();
         res.status(200).json({
-          success: true,
-          user,
-          message: "User updated successfully",
+            success: true,
+            user,
+            message: "User updated successfully",
         });
-      }
+    }
 }
 ));
 

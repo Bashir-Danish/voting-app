@@ -18,7 +18,7 @@ router.post('/add', catchAsyncError(async (req, res) => {
 
 router.get('/all', catchAsyncError(async (req, res) => {
     let provinces = await Province.find();
-    res.status(201).json({
+    res.status(200).json({
         success: true,
         provinces,
     });
@@ -29,16 +29,16 @@ router.delete('/:id', catchAsyncError(async (req, res) => {
     const province = await Province.findById(req.params.id);
     if (!province) {
         res.status(500).json({
-            message:"province not found"
+            message: "province not found"
         })
     } else {
         await province.remove();
-    
+
         res.status(200).json({
-          success: true,
-          message: "Province deleted successfully",
+            success: true,
+            message: "Province deleted successfully",
         });
-      }
+    }
 }
 ));
 
@@ -46,18 +46,18 @@ router.put('/:id', catchAsyncError(async (req, res) => {
     const province = await Province.findById(req.params.id);
     if (!province) {
         res.status(500).json({
-            message:"province not found"
+            message: "province not found"
         })
     } else {
-        const {name} = req.body;
+        const { name } = req.body;
         province.name = name;
         province.save();
         res.status(200).json({
-          success: true,
-          province,
-          message: "Province updated successfully",
+            success: true,
+            province,
+            message: "Province updated successfully",
         });
-      }
+    }
 }
 ));
 

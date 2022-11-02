@@ -53,7 +53,6 @@ router.get(
                 percentage: percentage ? percentage : 0,
             });
         });
-
         res.status(200).json({
             success: true,
             result,
@@ -69,8 +68,7 @@ router.post(
             let poll = await Poll.findById(req.params.id);
             let options = [...poll.options]
             let index = req.body.opIndex
-          
-            
+
             if (options.indexOf(options[index]) !== -1) {
                 options[index].vote = options[index].vote + 1;
                 let totalVote = poll.totalVote + 1;
@@ -85,10 +83,9 @@ router.post(
                 );
 
                 let user = await User.findById(req.body.userId);
-
                 user.polls.push({
                     pollId: req.params.id,
-                    opIndex : req.body.opIndex
+                    opIndex: req.body.opIndex
                 })
                 user.save();
 
@@ -98,12 +95,9 @@ router.post(
             } else {
                 return res.status(404).json({
                     success: false,
-                    message:"option not found"
+                    message: "option not found"
                 });
             }
-
-
-            
         } catch (error) {
             console.log(error)
         }
@@ -115,16 +109,16 @@ router.delete('/:id', catchAsyncError(async (req, res) => {
     const poll = await Poll.findById(req.params.id);
     if (!poll) {
         res.status(500).json({
-            message:"Poll not found"
+            message: "Poll not found"
         })
     } else {
         await poll.remove();
-    
+
         res.status(200).json({
-          success: true,
-          message: "Poll deleted successfully",
+            success: true,
+            message: "Poll deleted successfully",
         });
-      }
+    }
 }
 ));
 export default router;
