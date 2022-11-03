@@ -25,6 +25,8 @@ router.post(
     });
   })
 );
+
+
 router.post("/upload", function (req, res) {
   let sampleFile;
   let uploadPath;
@@ -37,7 +39,7 @@ router.post("/upload", function (req, res) {
       return res.status(400).send("No files were uploaded.");
     }
       uploadPath = path.join(__dirname, "..", "/uploads/profiles/") + Date.now().toString() + sampleFile.name;
-      console.log(uploadPath)
+  
     sampleFile.mv(uploadPath, function (err) {
       if (err) return res.status(500).send(err);
       res.json({
@@ -49,6 +51,7 @@ router.post("/upload", function (req, res) {
     console.log(error);
   }
 });
+
 router.get(
   "/all",
   catchAsyncError(async (req, res) => {
@@ -59,11 +62,13 @@ router.get(
     });
   })
 );
+
 // login
 router.get(
-  "/:id",
+  "/:phoneNum",
   catchAsyncError(async (req, res) => {
-    const user = await User.findById(req.params.id);
+    const user = await User.find({ phone: req.params.phoneNum });
+    console.log(user)
     let code = 200;
     let message = true;
     if (!user) {
@@ -72,6 +77,7 @@ router.get(
     }
     res.status(code).json({
       success: message,
+      user
     });
   })
 );

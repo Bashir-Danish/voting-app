@@ -80,12 +80,15 @@ router.put(
     let post = await Post.findById(req.params.id);
     post.text = req.body.text ?? post.text;
     post.isApprove = req.body.isApprove ?? post.isApprove;
+    post.save();
     res.status(200).json({
       success: true,
       post,
     });
   })
 );
+
+
 
 router.post("/upload", function (req, res) {
   let sampleFile;
@@ -99,7 +102,7 @@ router.post("/upload", function (req, res) {
       return res.status(400).send("No files were uploaded.");
     }
       uploadPath = path.join(__dirname, "..", "/uploads/posts/") + Date.now().toString() + sampleFile.name;
-      console.log(uploadPath)
+      
     sampleFile.mv(uploadPath, function (err) {
       if (err) return res.status(500).send(err);
       res.json({

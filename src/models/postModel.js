@@ -14,7 +14,8 @@ const postSchema = new mongoose.Schema({
     isApprove:{
         type:Boolean,
         default:false
-    }
+    },
+ 
 },{timestamps :true})
 
 export default model('posts', postSchema)
