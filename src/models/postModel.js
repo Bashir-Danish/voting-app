@@ -4,8 +4,8 @@ const postSchema = new mongoose.Schema({
     text :{
         type :String ,
     },
-    file:{
-        type:String,
+    file: {
+        type: []
     },
     office:{
         type: mongoose.Schema.ObjectId,
@@ -14,6 +14,14 @@ const postSchema = new mongoose.Schema({
     category:{
         type: mongoose.Schema.ObjectId,
         ref:"categories"
+    },
+    province:{
+        type: mongoose.Schema.ObjectId,
+        ref:"provinces"
+    },
+    district:{
+        type: mongoose.Schema.ObjectId,
+        ref:"districts"
     },
     isApprove:{
         type:Boolean,

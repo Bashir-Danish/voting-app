@@ -26,32 +26,6 @@ router.post(
   })
 );
 
-
-router.post("/upload", function (req, res) {
-  let sampleFile;
-  let uploadPath;
-  try {
-    const __filename = fileURLToPath(import.meta.url);
-    const __dirname = path.dirname(__filename);
-
-    sampleFile = req.files.file;
-    if (!req.files || Object.keys(req.files).length === 0) {
-      return res.status(400).send("No files were uploaded.");
-    }
-      uploadPath = path.join(__dirname, "..", "/uploads/profiles/") + Date.now().toString() + sampleFile.name;
-  
-    sampleFile.mv(uploadPath, function (err) {
-      if (err) return res.status(500).send(err);
-      res.json({
-        message: "File uploaded!",
-        path: uploadPath,
-      });
-    });
-  } catch (error) {
-    console.log(error);
-  }
-});
-
 router.get(
   "/all",
   catchAsyncError(async (req, res) => {

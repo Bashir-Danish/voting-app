@@ -11,7 +11,7 @@ router.get(
   catchAsyncError(async (req, res) => {
     let posts = await Post.find()
       .select({ text: 0 })
-      .populate("office category");
+      .populate("office category province district");
 
     res.status(200).json({
       success: true,
@@ -31,7 +31,7 @@ router.get(
     }
     posts = await Post.find(filter)
     .select({ text: 0 })
-    .populate("office category");
+    .populate("office category province district");
 
     posts = await Post.find();
     res.status(200).json({
@@ -49,6 +49,8 @@ router.post(
       file: req.body.file,
       office: req.body.office,
       category: req.body.category,
+      province: req.body.province,
+      district: req.body.district,
       isApprove: true,
     });
     res.status(201).json({
@@ -65,6 +67,9 @@ router.post(
       text: req.body.text,
       file: req.body.file,
       office: req.body.office,
+      category: req.body.category,
+      province: req.body.province,
+      district: req.body.district,
     });
     res.status(201).json({
       success: true,
@@ -102,33 +107,7 @@ router.put(
   })
 );
 
-router.post("/upload", function (req, res) {
-  let sampleFile;
-  let uploadPath;
-  try {
-    const __filename = fileURLToPath(import.meta.url);
-    const __dirname = path.dirname(__filename);
 
-    sampleFile = req.files.file;
-    if (!req.files || Object.keys(req.files).length === 0) {
-      return res.status(400).send("No files were uploaded.");
-    }
-    uploadPath =
-      path.join(__dirname, "..", "/uploads/posts/") +
-      Date.now().toString() +
-      sampleFile.name;
-
-    sampleFile.mv(uploadPath, function (err) {
-      if (err) return res.status(500).send(err);
-      res.json({
-        message: "File uploaded!",
-        path: uploadPath,
-      });
-    });
-  } catch (error) {
-    console.log(error);
-  }
-});
 
 router.delete(
   "/:id",
