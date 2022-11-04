@@ -9,9 +9,10 @@ const router = express.Router();
 router.post(
   "/signup",
   catchAsyncError(async (req, res) => {
-    const { name, lastName, email, phone, province, district } = req.body;
+    const {uid, name, lastName, email, phone, province, district } = req.body;
 
     let user = await User.create({
+      uid,
       name,
       lastName,
       email,
@@ -39,10 +40,10 @@ router.get(
 
 // login
 router.get(
-  "/:phoneNum",
+  "/:uid",
   catchAsyncError(async (req, res) => {
-    const user = await User.find({ phone: req.params.phoneNum });
-    console.log(user)
+    const user = await User.find({ uid: req.params.uid });
+    
     let code = 200;
     let message = true;
     if (!user) {
