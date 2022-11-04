@@ -39,7 +39,7 @@ router.delete(
                 message: "district not found",
             });
         } else {
-            await district.remove();
+            await district.deleteOne();
 
             res.status(200).json({
                 success: true,

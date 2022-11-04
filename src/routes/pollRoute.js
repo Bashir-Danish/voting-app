@@ -23,7 +23,7 @@ router.post(
         options = options.map((obj) => {
             return {
                 name: obj,
-                vote: null,
+                vote: 0,
             };
         });
         let poll = await Poll.create({
@@ -112,7 +112,7 @@ router.delete('/:id', catchAsyncError(async (req, res) => {
             message: "Poll not found"
         })
     } else {
-        await poll.remove();
+        await poll.deleteOne();
 
         res.status(200).json({
             success: true,

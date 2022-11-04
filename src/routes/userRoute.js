@@ -91,7 +91,7 @@ router.delete(
         message: "user not found",
       });
     } else {
-      await user.remove();
+      await user.deleteOne();
 
       res.status(200).json({
         success: true,

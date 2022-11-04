@@ -11,6 +11,10 @@ const postSchema = new mongoose.Schema({
         type: mongoose.Schema.ObjectId,
         ref:"offices"
     },
+    category:{
+        type: mongoose.Schema.ObjectId,
+        ref:"categories"
+    },
     isApprove:{
         type:Boolean,
         default:false

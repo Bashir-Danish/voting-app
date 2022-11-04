@@ -32,7 +32,7 @@ router.delete('/:id', catchAsyncError(async (req, res) => {
             message: "province not found"
         })
     } else {
-        await province.remove();
+        await province.deleteOne();
 
         res.status(200).json({
             success: true,

@@ -53,7 +53,7 @@ router.delete(
         if (!office) {
             return res.status(404).json({message :'office not found'})
         } else {
-            await office.remove()
+            await office.deleteOne()
             
             res.status(200).json({
                 success: true,

@@ -36,14 +36,16 @@ import userRouter from "./routes/userRoute.js";
 import postRoute from "./routes/postRoute.js";
 import pollRoute from "./routes/pollRoute.js";
 import officeRoute from "./routes/officeRoute.js";
-import CommentRoute from "./routes/commentRoute.js";
+import commentRoute from "./routes/commentRoute.js";
+import categoryRoute from "./routes/categoryRoute.js";
 app.use("/api/v1/province", provinceRouter);
 app.use("/api/v1/district", districtRouter);
 app.use("/api/v1/user", userRouter);
 app.use("/api/v1/post", postRoute);
 app.use("/api/v1/poll", pollRoute);
 app.use("/api/v1/office", officeRoute);
-app.use("/api/v1/comment", CommentRoute);
+app.use("/api/v1/comment", commentRoute);
+app.use("/api/v1/category", categoryRoute);
 
 
 

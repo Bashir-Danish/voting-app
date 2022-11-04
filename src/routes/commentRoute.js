@@ -39,7 +39,7 @@ router.delete(
     if (!comment) {
       return res.status(404).json({ message: "Comment not found" });
     }
-    await comment.remove();
+    await comment.deleteOne();
     res.status(200).json({
       success: true,
       message: "comment deleted successfully",

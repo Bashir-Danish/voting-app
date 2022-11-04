@@ -4,14 +4,15 @@ import Post from "../models/postModel.js";
 import { fileURLToPath } from "url";
 import path from "path";
 
-
-
 const router = express.Router();
 
 router.get(
   "/all",
   catchAsyncError(async (req, res) => {
-    let posts = await Post.find();
+    let posts = await Post.find()
+      .select({ text: 0 })
+      .populate("office category");
+
     res.status(200).json({
       success: true,
       posts,
@@ -22,7 +23,17 @@ router.get(
 router.get(
   "/allPost",
   catchAsyncError(async (req, res) => {
-    let posts = await Post.find({ isApprove: true });
+    let posts;
+    let filter = {};
+    if (req.query.category) {
+      filter.category = req.query.category;
+      filter.isApprove = true;
+    }
+    posts = await Post.find(filter)
+    .select({ text: 0 })
+    .populate("office category");
+
+    posts = await Post.find();
     res.status(200).json({
       success: true,
       posts,
@@ -35,6 +46,9 @@ router.post(
   catchAsyncError(async (req, res) => {
     let post = await Post.create({
       text: req.body.text,
+      file: req.body.file,
+      office: req.body.office,
+      category: req.body.category,
       isApprove: true,
     });
     res.status(201).json({
@@ -88,8 +102,6 @@ router.put(
   })
 );
 
-
-
 router.post("/upload", function (req, res) {
   let sampleFile;
   let uploadPath;
@@ -101,8 +113,11 @@ router.post("/upload", function (req, res) {
     if (!req.files || Object.keys(req.files).length === 0) {
       return res.status(400).send("No files were uploaded.");
     }
-      uploadPath = path.join(__dirname, "..", "/uploads/posts/") + Date.now().toString() + sampleFile.name;
-      
+    uploadPath =
+      path.join(__dirname, "..", "/uploads/posts/") +
+      Date.now().toString() +
+      sampleFile.name;
+
     sampleFile.mv(uploadPath, function (err) {
       if (err) return res.status(500).send(err);
       res.json({
@@ -124,7 +139,7 @@ router.delete(
         message: "post not found",
       });
     } else {
-      await post.remove();
+      await post.deleteOne();
 
       res.status(200).json({
         success: true,
