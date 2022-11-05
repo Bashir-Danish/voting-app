@@ -8,6 +8,10 @@ const officeSchema = new mongoose.Schema({
     province: {
         type: mongoose.Schema.ObjectId,
         ref: "provinces"
+    },
+    district: {
+        type: mongoose.Schema.ObjectId,
+        ref: "districts"
     }
 });
 

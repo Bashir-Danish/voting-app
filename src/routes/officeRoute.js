@@ -6,10 +6,11 @@ const router = express.Router();
 router.post(
     "/add",
     catchAsyncError(async (req, res) => {
-        const { name, province } = req.body;
+        const { name, province ,district} = req.body;
         let office = await Office.create({
             name,
             province,
+            district,
         });
         res.status(201).json({
             success: true,
@@ -22,7 +23,7 @@ router.get(
     "/all",
     catchAsyncError(async (req, res) => {
 
-        let offices = await Office.find().populate('province');
+        let offices = await Office.find().populate('province district');
         res.status(200).json({
             success: true,
             offices,
@@ -36,6 +37,7 @@ router.put(
         let office = await Office.findById(req.params.id);
         office.name = req.body.name ?? office.name;
         office.province = req.body.province ?? office.province;
+        office.district = req.body.district ?? office.district;
 
         office.save()
         res.status(200).json({
