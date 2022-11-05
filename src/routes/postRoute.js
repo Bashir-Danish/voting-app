@@ -50,7 +50,6 @@ router.post(
       category: req.body.category,
       province: req.body.province,
       district: req.body.district,
-      user: req.body.user,
       isApprove: true,
     });
     res.status(201).json({
