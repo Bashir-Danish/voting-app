@@ -1,8 +1,6 @@
 import express from "express";
 import { catchAsyncError } from "../middleware.js";
 import Post from "../models/postModel.js";
-import { fileURLToPath } from "url";
-import path from "path";
 
 const router = express.Router();
 
@@ -45,12 +43,14 @@ router.post(
   "/admin/add",
   catchAsyncError(async (req, res) => {
     let post = await Post.create({
+      title: req.body.title,
       text: req.body.text,
       file: req.body.file,
       office: req.body.office,
       category: req.body.category,
       province: req.body.province,
       district: req.body.district,
+      user: req.body.user,
       isApprove: true,
     });
     res.status(201).json({
@@ -64,12 +64,14 @@ router.post(
   "/user/add",
   catchAsyncError(async (req, res) => {
     let post = await Post.create({
+      title: req.body.title,
       text: req.body.text,
       file: req.body.file,
       office: req.body.office,
       category: req.body.category,
       province: req.body.province,
       district: req.body.district,
+      user: req.body.user,
     });
     res.status(201).json({
       success: true,
@@ -97,6 +99,7 @@ router.put(
   "/:id",
   catchAsyncError(async (req, res) => {
     let post = await Post.findById(req.params.id);
+    post.title = req.body.title ?? post.title;
     post.text = req.body.text ?? post.text;
     post.isApprove = req.body.isApprove ?? post.isApprove;
     post.save();

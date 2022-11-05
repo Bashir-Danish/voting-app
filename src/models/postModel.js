@@ -1,6 +1,9 @@
 import mongoose, { model } from 'mongoose'
 
 const postSchema = new mongoose.Schema({
+    title :{
+        type :String ,
+    },
     text :{
         type :String ,
     },
@@ -22,6 +25,10 @@ const postSchema = new mongoose.Schema({
     district:{
         type: mongoose.Schema.ObjectId,
         ref:"districts"
+    },
+    user:{
+        type: mongoose.Schema.ObjectId,
+        ref:"users"
     },
     isApprove:{
         type:Boolean,
