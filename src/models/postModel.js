@@ -28,7 +28,8 @@ const postSchema = new mongoose.Schema({
     },
     user:{
         type: mongoose.Schema.ObjectId,
-        ref:"users"
+        ref: "users",
+        default: null,
     },
     isApprove:{
         type:Boolean,
