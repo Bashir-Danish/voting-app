@@ -22,7 +22,7 @@ router.get(
     "/all",
     catchAsyncError(async (req, res) => {
 
-        let offices = await Office.find();
+        let offices = await Office.find().populate('province');
         res.status(200).json({
             success: true,
             offices,

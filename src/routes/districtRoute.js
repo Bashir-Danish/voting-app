@@ -22,7 +22,7 @@ router.post(
 router.get(
     "/all",
     catchAsyncError(async (req, res) => {
-        let districts = await District.find();
+        let districts = await District.find().populate('province');
         res.status(200).json({
             success: true,
             districts,
