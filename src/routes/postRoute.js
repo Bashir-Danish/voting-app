@@ -19,6 +19,20 @@ router.get(
 );
 
 router.get(
+  "/:id",
+  catchAsyncError(async (req, res) => {
+    let post = await Post.findOne({ _id: req.params.id }).populate(
+      "office category province district"
+    );
+
+    res.status(200).json({
+      success: true,
+      post,
+    });
+  })
+);
+
+router.get(
   "/allPost",
   catchAsyncError(async (req, res) => {
     let posts;
@@ -28,8 +42,8 @@ router.get(
       filter.isApprove = true;
     }
     posts = await Post.find(filter)
-    .select({ text: 0 })
-    .populate("office category province district");
+      .select({ text: 0 })
+      .populate("office category province district");
 
     posts = await Post.find();
     res.status(200).json({
@@ -108,8 +122,6 @@ router.put(
     });
   })
 );
-
-
 
 router.delete(
   "/:id",

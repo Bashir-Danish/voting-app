@@ -1,14 +1,22 @@
-import express, { json } from "express";
-import morgan from "morgan";
-import helmet from "helmet";
+import bp from "body-parser";
 import cors from "cors";
 import { config } from "dotenv";
-import { notFound, errorHandler } from "./middleware.js";
-import connectDatabase from "./config/db.js";
-import bp from "body-parser";
+import express, { json } from "express";
 import fileUpload from "express-fileupload";
-import { fileURLToPath } from "url";
+import helmet from "helmet";
+import morgan from "morgan";
 import path from "path";
+import { fileURLToPath } from "url";
+import connectDatabase from "./config/db.js";
+import { errorHandler, notFound } from "./middleware.js";
+import categoryRoute from "./routes/categoryRoute.js";
+import commentRoute from "./routes/commentRoute.js";
+import districtRouter from "./routes/districtRoute.js";
+import officeRoute from "./routes/officeRoute.js";
+import pollRoute from "./routes/pollRoute.js";
+import postRoute from "./routes/postRoute.js";
+import provinceRouter from "./routes/provinceRoutes.js";
+import userRouter from "./routes/userRoute.js";
 
 config();
 connectDatabase();
@@ -25,7 +33,7 @@ app.use(helmet());
 app.use(cors());
 app.use(json());
 app.use(fileUpload());
-
+app.use("/uploads", express.static("uploads"));
 app.post("/upload", function (req, res) {
   let sampleFile;
   let uploadPath;
@@ -37,16 +45,14 @@ app.post("/upload", function (req, res) {
     if (!req.files || Object.keys(req.files).length === 0) {
       return res.status(400).send("No files were uploaded.");
     }
-    uploadPath =
-      path.join(__dirname, "..", "/uploads/") +
-      Date.now().toString() +
-      sampleFile.name;
+    const fileName = Date.now().toString() + sampleFile.name;
+    uploadPath = path.join(__dirname, "..", "/uploads/") + fileName;
 
     sampleFile.mv(uploadPath, function (err) {
       if (err) return res.status(500).send(err);
       res.json({
         message: "File uploaded!",
-        path: "/uploads/" + Date.now().toString() + sampleFile.name,
+        path: "/uploads/" + fileName,
       });
     });
   } catch (error) {
@@ -54,14 +60,6 @@ app.post("/upload", function (req, res) {
   }
 });
 
-import provinceRouter from "./routes/provinceRoutes.js";
-import districtRouter from "./routes/districtRoute.js";
-import userRouter from "./routes/userRoute.js";
-import postRoute from "./routes/postRoute.js";
-import pollRoute from "./routes/pollRoute.js";
-import officeRoute from "./routes/officeRoute.js";
-import commentRoute from "./routes/commentRoute.js";
-import categoryRoute from "./routes/categoryRoute.js";
 app.use("/api/v1/province", provinceRouter);
 app.use("/api/v1/district", districtRouter);
 app.use("/api/v1/user", userRouter);
