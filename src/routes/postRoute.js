@@ -95,18 +95,18 @@ router.post(
 
 // Approve the post
 
-router.put(
-  "/:id",
-  catchAsyncError(async (req, res) => {
-    let post = await Post.findById(req.params.id);
-    post.isApprove = true;
-    post.save();
-    res.status(200).json({
-      success: true,
-      isApprove: post.isApprove,
-    });
-  })
-);
+// router.put(
+//   "/:id",
+//   catchAsyncError(async (req, res) => {
+//     let post = await Post.findById(req.params.id);
+//     post.isApprove = true;
+//     post.save();
+//     res.status(200).json({
+//       success: true,
+//       isApprove: post.isApprove,
+//     });
+//   })
+// );
 
 router.put(
   "/:id",
@@ -115,6 +115,11 @@ router.put(
     post.title = req.body.title ?? post.title;
     post.text = req.body.text ?? post.text;
     post.isApprove = req.body.isApprove ?? post.isApprove;
+    post.province = req.body.province ?? post.province;
+    post.district = req.body.district ?? post.district;
+    post.office = req.body.office ?? post.office;
+    post.category = req.body.category ?? post.category;
+    post.file = req.body.file ?? post.file;
     post.save();
     res.status(200).json({
       success: true,
