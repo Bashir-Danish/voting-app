@@ -111,16 +111,11 @@ router.post(
 router.put(
   "/:id",
   catchAsyncError(async (req, res) => {
-    let post = await Post.findById(req.params.id);
-    post.title = req.body.title ?? post.title;
-    post.text = req.body.text ?? post.text;
-    post.isApprove = req.body.isApprove ?? post.isApprove;
-    post.province = req.body.province ?? post.province;
-    post.district = req.body.district ?? post.district;
-    post.office = req.body.office ?? post.office;
-    post.category = req.body.category ?? post.category;
-    post.file = req.body.file ?? post.file;
-    post.save();
+    let post = await Post.findOneAndUpdate({ _id: req.params.id }, req.body, {
+      new: true,
+      runValidators: true,
+      useFindAndModify: false,
+    });
     res.status(200).json({
       success: true,
       post,
