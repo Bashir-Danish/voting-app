@@ -20,6 +20,29 @@ router.get(
     });
   })
 );
+router.get(
+  "/slider",
+  catchAsyncError(async (req, res) => {
+    let posts = await Post.aggregate([
+      { $match: { isApprove: true } },
+      { $sample: { size: 3 } },
+      // select only the fields you need
+      {
+        $project: {
+          _id: 1,
+          title: 1,
+          file: 1,
+          createdAt: 1,
+          category: 1,
+        },
+      },
+    ]);
+    res.status(200).json({
+      success: true,
+      posts,
+    });
+  })
+);
 
 router.post(
   "/admin/add",
