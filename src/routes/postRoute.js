@@ -26,14 +26,22 @@ router.get(
     let posts = await Post.aggregate([
       { $match: { isApprove: true } },
       { $sample: { size: 5 } },
-      // select only the fields you need
+      {
+        $lookup: {
+          from: "categories",
+          localField: "category",
+          foreignField: "_id",
+          as: "category",
+        },
+      },
+      {$unwind: '$category'},
       {
         $project: {
           _id: 1,
           title: 1,
           file: 1,
           createdAt: 1,
-          category: 1,
+          category: "$category",
         },
       },
     ]);
