@@ -5,20 +5,6 @@ import Post from "../models/postModel.js";
 const router = express.Router();
 
 router.get(
-  "/all",
-  catchAsyncError(async (req, res) => {
-    let posts = await Post.find()
-      .select({ text: 0 })
-      .populate("office category province district");
-
-    res.status(200).json({
-      success: true,
-      posts,
-    });
-  })
-);
-
-router.get(
   "/:id",
   catchAsyncError(async (req, res) => {
     let post = await Post.findOne({ _id: req.params.id }).populate(
@@ -33,14 +19,12 @@ router.get(
 );
 
 router.get(
-  "/allPost",
+  "/all",
   catchAsyncError(async (req, res) => {
     let posts;
     let filter = {};
-    if (req.query.category) {
-      filter.category = req.query.category;
-      filter.isApprove = true;
-    }
+    if (req.query.category) filter.category = req.query.category;
+    filter.isApprove = req.query.isApprove ?? true;
     posts = await Post.find(filter)
       .select({ text: 0 })
       .populate("office category province district");
@@ -92,21 +76,6 @@ router.post(
     });
   })
 );
-
-// Approve the post
-
-// router.put(
-//   "/:id",
-//   catchAsyncError(async (req, res) => {
-//     let post = await Post.findById(req.params.id);
-//     post.isApprove = true;
-//     post.save();
-//     res.status(200).json({
-//       success: true,
-//       isApprove: post.isApprove,
-//     });
-//   })
-// );
 
 router.put(
   "/:id",
