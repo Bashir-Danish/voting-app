@@ -5,20 +5,6 @@ import Post from "../models/postModel.js";
 const router = express.Router();
 
 router.get(
-  "/:id",
-  catchAsyncError(async (req, res) => {
-    let post = await Post.findOne({ _id: req.params.id }).populate(
-      "office category province district"
-    );
-
-    res.status(200).json({
-      success: true,
-      post,
-    });
-  })
-);
-
-router.get(
   "/all",
   catchAsyncError(async (req, res) => {
     let posts;
@@ -28,8 +14,6 @@ router.get(
     posts = await Post.find(filter)
       .select({ text: 0 })
       .populate("office category province district");
-
-    posts = await Post.find();
     res.status(200).json({
       success: true,
       posts,
@@ -77,6 +61,19 @@ router.post(
   })
 );
 
+router.get(
+  "/:id",
+  catchAsyncError(async (req, res) => {
+    let post = await Post.findOne({ _id: req.params.id }).populate(
+      "office category province district"
+    );
+
+    res.status(200).json({
+      success: true,
+      post,
+    });
+  })
+);
 router.put(
   "/:id",
   catchAsyncError(async (req, res) => {
