@@ -25,7 +25,7 @@ router.get(
   catchAsyncError(async (req, res) => {
     let posts = await Post.aggregate([
       { $match: { isApprove: true } },
-      { $sample: { size: 3 } },
+      { $sample: { size: 5 } },
       // select only the fields you need
       {
         $project: {
