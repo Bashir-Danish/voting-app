@@ -95,13 +95,13 @@ router.post(
 router.get(
   "/:id",
   catchAsyncError(async (req, res) => {
-    let post = await Post.findOne({ _id: req.params.id }).populate(
+    let post = await Post.find({ _id: req.params.id }).populate(
       "office category province district"
     );
 
     res.status(200).json({
       success: true,
-      post,
+      posts: post,
     });
   })
 );

@@ -9,20 +9,10 @@ const router = express.Router();
 router.post(
   "/signup",
   catchAsyncError(async (req, res) => {
-    const {uid, name, lastName, email, phone, province, district } = req.body;
-
-    let user = await User.create({
-      uid,
-      name,
-      lastName,
-      email,
-      phone,
-      province,
-      district,
-    });
+    let user = await User.create(req.body);
     res.status(201).json({
       success: true,
-      user,
+      users: [user],
     });
   })
 );
@@ -52,7 +42,7 @@ router.get(
     }
     res.status(code).json({
       success: message,
-      user
+      users: user
     });
   })
 );

@@ -9,13 +9,8 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  lastName: {
-    type: String,
-    required: true,
-  },
   email: {
     type: String,
-    required: true,
   },
   phone: {
     type: Number,
@@ -24,12 +19,10 @@ const userSchema = new mongoose.Schema({
   },
   province: {
     type: mongoose.Schema.ObjectId,
-    required: true,
     ref: "provinces",
   },
   district: {
     type: mongoose.Schema.ObjectId,
-    required: true,
     ref: "districts",
   },
   polls: {
